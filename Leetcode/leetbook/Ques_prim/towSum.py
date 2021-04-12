@@ -7,21 +7,29 @@
 因为 nums[0] + nums[1] = 2 + 7 = 9
 所以返回 [0, 1]
 """
-class Solution(object):
-    #时间复杂度O(n)
-    #空间复杂度O(n)
-    def twoSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
-        """
-        # 记录元素的位置,存在重复元素覆盖的情况
-        hashmap = {}
-        for ind, num in enumerate(nums):
-            hashmap[num] = ind
-        for i, num in enumerate(nums):
-            j = hashmap.get(target - num)
-            #target-num存在而且和num不同
-            if j is not None and i != j:
-                return [i, j]
+import sys
+
+nums = sys.stdin.readline().strip().split(" ")
+nums = list(map(int, nums))
+target = int(sys.stdin.readline().strip())
+
+
+# 要求空间复杂度为O(1)
+for i in range(len(nums)):
+    for j in range(i+1, len(nums)):
+        if nums[i] + nums[j] == target:
+            print([i, j])
+
+# 要求时间复杂度为O(n)
+hashmap = {}
+for i in range(len(nums)):
+    # 这里有一个重复数据覆盖问题，后面的重复数据覆盖前面数据的下标
+    # 但是在这道题中不影响结果
+    hashmap[nums[i]] = i
+for j in range(len(nums)):
+    res = target - nums[j]
+    if res in hashmap and j != hashmap[res]:
+        print([j, hashmap[res]])
+        break
+
+
